@@ -13,6 +13,7 @@ import (
 	"github.com/hashicorp/terraform/internal/terraform"
 	"github.com/hashicorp/terraform/internal/tfdiags"
 	"github.com/mitchellh/cli"
+	"github.com/posener/complete"
 )
 
 // UnlockCommand is a cli.Command implementation that manually unlocks
@@ -115,6 +116,16 @@ func (c *UnlockCommand) Run(args []string) int {
 
 	c.Ui.Output(c.Colorize().Color(strings.TrimSpace(outputUnlockSuccess)))
 	return 0
+}
+
+func (c *UnlockCommand) AutocompleteArgs() complete.Predictor {
+	return nil
+}
+
+func (c *UnlockCommand) AutocompleteFlags() complete.Flags {
+	return complete.Flags{
+		"-force": complete.PredictNothing,
+	}
 }
 
 func (c *UnlockCommand) Help() string {

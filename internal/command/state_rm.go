@@ -14,6 +14,7 @@ import (
 	"github.com/hashicorp/terraform/internal/terraform"
 	"github.com/hashicorp/terraform/internal/tfdiags"
 	"github.com/mitchellh/cli"
+	"github.com/posener/complete"
 )
 
 // StateRmCommand is a Command implementation that shows a single resource.
@@ -154,6 +155,21 @@ func (c *StateRmCommand) Run(args []string) int {
 
 	c.Ui.Output(fmt.Sprintf("Successfully removed %d resource instance(s).", isCount))
 	return 0
+}
+
+func (c *StateRmCommand) AutocompleteArgs() complete.Predictor {
+	return nil
+}
+
+func (c *StateRmCommand) AutocompleteFlags() complete.Flags {
+	return complete.Flags{
+		"-dry-run":               complete.PredictNothing,
+		"-backup":                complete.PredictOr(complete.PredictFiles("*.tfstate"), complete.PredictSet("-")),
+		"-lock":                  completePredictBoolean,
+		"-lock-timeout":          complete.PredictAnything,
+		"-state":                 complete.PredictFiles("*.tfstate"),
+		"-ignore-remote-version": complete.PredictNothing,
+	}
 }
 
 func (c *StateRmCommand) Help() string {

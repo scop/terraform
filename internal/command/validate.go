@@ -14,6 +14,7 @@ import (
 	"github.com/hashicorp/terraform/internal/configs"
 	"github.com/hashicorp/terraform/internal/terraform"
 	"github.com/hashicorp/terraform/internal/tfdiags"
+	"github.com/posener/complete"
 )
 
 // ValidateCommand is a Command implementation that validates the terraform files
@@ -141,6 +142,19 @@ func (c *ValidateCommand) validate(dir, testDir string, noTests bool) tfdiags.Di
 
 func (c *ValidateCommand) Synopsis() string {
 	return "Check whether the configuration is valid"
+}
+
+func (c *ValidateCommand) AutocompleteArgs() complete.Predictor {
+	return nil
+}
+
+func (c *ValidateCommand) AutocompleteFlags() complete.Flags {
+	return complete.Flags{
+		"-json":           complete.PredictNothing,
+		"-no-color":       complete.PredictNothing,
+		"-no-tests":       complete.PredictNothing,
+		"-test-directory": complete.PredictDirs(""),
+	}
 }
 
 func (c *ValidateCommand) Help() string {

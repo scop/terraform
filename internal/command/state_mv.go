@@ -16,6 +16,7 @@ import (
 	"github.com/hashicorp/terraform/internal/terraform"
 	"github.com/hashicorp/terraform/internal/tfdiags"
 	"github.com/mitchellh/cli"
+	"github.com/posener/complete"
 )
 
 // StateMvCommand is a Command implementation that shows a single resource.
@@ -514,6 +515,23 @@ func (c *StateMvCommand) validateResourceMove(addrFrom, addrTo addrs.AbsResource
 		))
 	}
 	return diags
+}
+
+func (c *StateMvCommand) AutocompleteArgs() complete.Predictor {
+	return nil
+}
+
+func (c *StateMvCommand) AutocompleteFlags() complete.Flags {
+	return complete.Flags{
+		"-dry-run":               complete.PredictNothing,
+		"-backup":                complete.PredictOr(complete.PredictFiles("*.tfstate"), complete.PredictSet("-")),
+		"-backup-out":            complete.PredictOr(complete.PredictFiles("*.tfstate"), complete.PredictSet("-")),
+		"-lock":                  completePredictBoolean,
+		"-lock-timeout":          complete.PredictAnything,
+		"-state":                 complete.PredictFiles("*.tfstate"),
+		"-state-out":             complete.PredictFiles("*.tfstate"),
+		"-ignore-remote-version": complete.PredictNothing,
+	}
 }
 
 func (c *StateMvCommand) Help() string {

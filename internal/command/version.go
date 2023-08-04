@@ -13,6 +13,7 @@ import (
 	"github.com/hashicorp/terraform/internal/addrs"
 	"github.com/hashicorp/terraform/internal/depsfile"
 	"github.com/hashicorp/terraform/internal/getproviders"
+	"github.com/posener/complete"
 )
 
 // VersionCommand is a Command implementation prints the version.
@@ -43,6 +44,16 @@ type VersionCheckInfo struct {
 	Outdated bool
 	Latest   string
 	Alerts   []string
+}
+
+func (c *VersionCommand) AutocompleteArgs() complete.Predictor {
+	return nil
+}
+
+func (c *VersionCommand) AutocompleteFlags() complete.Flags {
+	return complete.Flags{
+		"-json": complete.PredictNothing,
+	}
 }
 
 func (c *VersionCommand) Help() string {

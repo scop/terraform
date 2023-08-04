@@ -144,7 +144,9 @@ func (c *WorkspaceSelectCommand) AutocompleteArgs() complete.Predictor {
 }
 
 func (c *WorkspaceSelectCommand) AutocompleteFlags() complete.Flags {
-	return nil
+	return complete.Flags{
+		"-or-create": completePredictBoolean,
+	}
 }
 
 func (c *WorkspaceSelectCommand) Help() string {

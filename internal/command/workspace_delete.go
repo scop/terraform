@@ -200,7 +200,9 @@ func (c *WorkspaceDeleteCommand) AutocompleteArgs() complete.Predictor {
 
 func (c *WorkspaceDeleteCommand) AutocompleteFlags() complete.Flags {
 	return complete.Flags{
-		"-force": complete.PredictNothing,
+		"-force":        complete.PredictNothing,
+		"-lock":         completePredictBoolean,
+		"-lock-timeout": complete.PredictAnything,
 	}
 }
 

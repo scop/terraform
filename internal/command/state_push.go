@@ -17,6 +17,7 @@ import (
 	"github.com/hashicorp/terraform/internal/terraform"
 	"github.com/hashicorp/terraform/internal/tfdiags"
 	"github.com/mitchellh/cli"
+	"github.com/posener/complete"
 )
 
 // StatePushCommand is a Command implementation that shows a single resource.
@@ -150,6 +151,18 @@ func (c *StatePushCommand) Run(args []string) int {
 
 	c.showDiagnostics(diags)
 	return 0
+}
+
+func (c *StatePushCommand) AutocompleteArgs() complete.Predictor {
+	return nil
+}
+
+func (c *StatePushCommand) AutocompleteFlags() complete.Flags {
+	return complete.Flags{
+		"-force":        complete.PredictNothing,
+		"-lock":         completePredictBoolean,
+		"-lock-timeout": complete.PredictAnything,
+	}
 }
 
 func (c *StatePushCommand) Help() string {

@@ -11,6 +11,7 @@ import (
 	"github.com/hashicorp/terraform/internal/states"
 	"github.com/hashicorp/terraform/internal/tfdiags"
 	"github.com/mitchellh/cli"
+	"github.com/posener/complete"
 )
 
 // StateListCommand is a Command implementation that lists the resources
@@ -91,6 +92,17 @@ func (c *StateListCommand) Run(args []string) int {
 	c.showDiagnostics(diags)
 
 	return 0
+}
+
+func (c *StateListCommand) AutocompleteArgs() complete.Predictor {
+	return nil
+}
+
+func (c *StateListCommand) AutocompleteFlags() complete.Flags {
+	return complete.Flags{
+		"-state": complete.PredictFiles("*.tfstate"),
+		"-id":    complete.PredictAnything,
+	}
 }
 
 func (c *StateListCommand) Help() string {

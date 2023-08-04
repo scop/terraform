@@ -22,6 +22,7 @@ import (
 	"github.com/hashicorp/terraform/internal/states/statemgr"
 	"github.com/hashicorp/terraform/internal/terraform"
 	"github.com/hashicorp/terraform/internal/tfdiags"
+	"github.com/posener/complete"
 )
 
 // Many of the methods we get data from can emit special error types if they're
@@ -84,6 +85,17 @@ func (c *ShowCommand) Run(rawArgs []string) int {
 
 	// Display the data
 	return view.Display(config, plan, jsonPlan, stateFile, schemas)
+}
+
+func (c *ShowCommand) AutocompleteArgs() complete.Predictor {
+	return nil
+}
+
+func (c *ShowCommand) AutocompleteFlags() complete.Flags {
+	return complete.Flags{
+		"-no-color": complete.PredictNothing,
+		"-json":     complete.PredictNothing,
+	}
 }
 
 func (c *ShowCommand) Help() string {

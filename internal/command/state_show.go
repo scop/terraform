@@ -17,6 +17,7 @@ import (
 	"github.com/hashicorp/terraform/internal/states"
 	"github.com/hashicorp/terraform/internal/states/statefile"
 	"github.com/mitchellh/cli"
+	"github.com/posener/complete"
 )
 
 // StateShowCommand is a Command implementation that shows a single resource.
@@ -165,6 +166,16 @@ func (c *StateShowCommand) Run(args []string) int {
 
 	renderer.RenderHumanState(jstate)
 	return 0
+}
+
+func (c *StateShowCommand) AutocompleteArgs() complete.Predictor {
+	return nil
+}
+
+func (c *StateShowCommand) AutocompleteFlags() complete.Flags {
+	return complete.Flags{
+		"-state": complete.PredictFiles("*.tfstate"),
+	}
 }
 
 func (c *StateShowCommand) Help() string {

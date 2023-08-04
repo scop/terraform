@@ -9,6 +9,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/posener/complete"
 	"github.com/zclconf/go-cty/cty"
 
 	"github.com/hashicorp/terraform/internal/addrs"
@@ -26,6 +27,22 @@ import (
 
 type TestCommand struct {
 	Meta
+}
+
+func (c *TestCommand) AutocompleteArgs() complete.Predictor {
+	return nil
+}
+
+func (c *TestCommand) AutocompleteFlags() complete.Flags {
+	return complete.Flags{
+		"-filter":         complete.PredictFiles("*.tf"),
+		"-json":           complete.PredictNothing,
+		"-no-color":       complete.PredictNothing,
+		"-test-directory": complete.PredictDirs(""),
+		"-var":            complete.PredictAnything,
+		"-var-file":       complete.PredictFiles("*.tfvars"),
+		"-verbose":        complete.PredictNothing,
+	}
 }
 
 func (c *TestCommand) Help() string {

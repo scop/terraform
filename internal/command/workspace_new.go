@@ -177,7 +177,9 @@ func (c *WorkspaceNewCommand) AutocompleteArgs() complete.Predictor {
 
 func (c *WorkspaceNewCommand) AutocompleteFlags() complete.Flags {
 	return complete.Flags{
-		"-state": complete.PredictFiles("*.tfstate"),
+		"-lock":         completePredictBoolean,
+		"-lock-timeout": complete.PredictAnything,
+		"-state":        complete.PredictFiles("*.tfstate"),
 	}
 }
 

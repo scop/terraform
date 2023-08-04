@@ -14,6 +14,7 @@ import (
 	"github.com/hashicorp/terraform/internal/states"
 	"github.com/hashicorp/terraform/internal/terraform"
 	"github.com/hashicorp/terraform/internal/tfdiags"
+	"github.com/posener/complete"
 )
 
 // TaintCommand is a cli.Command implementation that manually taints
@@ -191,6 +192,22 @@ func (c *TaintCommand) Run(args []string) int {
 	c.showDiagnostics(diags)
 	c.Ui.Output(fmt.Sprintf("Resource instance %s has been marked as tainted.", addr))
 	return 0
+}
+
+func (c *TaintCommand) AutocompleteArgs() complete.Predictor {
+	return nil
+}
+
+func (c *TaintCommand) AutocompleteFlags() complete.Flags {
+	return complete.Flags{
+		"-allow-missing":         complete.PredictNothing,
+		"-backup":                complete.PredictOr(complete.PredictFiles("*.tfstate"), complete.PredictSet("-")),
+		"-lock":                  completePredictBoolean,
+		"-lock-timeout":          complete.PredictAnything,
+		"-state":                 complete.PredictFiles("*.tfstate"),
+		"-state-out":             complete.PredictFiles("*.tfstate"),
+		"-ignore-remote-version": complete.PredictNothing,
+	}
 }
 
 func (c *TaintCommand) Help() string {

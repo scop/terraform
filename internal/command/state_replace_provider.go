@@ -15,6 +15,7 @@ import (
 	"github.com/hashicorp/terraform/internal/terraform"
 	"github.com/hashicorp/terraform/internal/tfdiags"
 	"github.com/mitchellh/cli"
+	"github.com/posener/complete"
 )
 
 // StateReplaceProviderCommand is a Command implementation that allows users
@@ -192,6 +193,20 @@ func (c *StateReplaceProviderCommand) Run(args []string) int {
 	c.showDiagnostics(diags)
 	c.Ui.Output(fmt.Sprintf("\nSuccessfully replaced provider for %d resources.", len(willReplace)))
 	return 0
+}
+
+func (c *StateReplaceProviderCommand) AutocompleteArgs() complete.Predictor {
+	return nil
+}
+
+func (c *StateReplaceProviderCommand) AutocompleteFlags() complete.Flags {
+	return complete.Flags{
+		"-auto-approve":          complete.PredictNothing,
+		"-lock":                  completePredictBoolean,
+		"-lock-timeout":          complete.PredictAnything,
+		"-state":                 complete.PredictFiles("*.tfstate"),
+		"-ignore-remote-version": complete.PredictNothing,
+	}
 }
 
 func (c *StateReplaceProviderCommand) Help() string {
